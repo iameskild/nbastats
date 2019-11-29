@@ -6,3 +6,4 @@ dependencies:
   -pandas
   -requests
   -beautifulsoup4
+  -psycopg2

@@ -79,7 +79,7 @@ with psycopg2.connect(dbname=nba_db, user=user, password=pw, host=host) as conn_
                         CREATE TABLE IF NOT EXISTS {}
                         (
                             league_id SERIAL PRIMARY KEY,
-                            name TEXT
+                            name TEXT UNIQUE
                         );
                         '''.format(league_table)
         cur_nba.execute(create_league)
@@ -92,7 +92,7 @@ with psycopg2.connect(dbname=nba_db, user=user, password=pw, host=host) as conn_
                             CREATE TABLE IF NOT EXISTS {}
                             (
                                 franchise_id SERIAL PRIMARY KEY,
-                                name TEXT
+                                name TEXT UNIQUE
                             );
                             '''.format(franchise_table)
         cur_nba.execute(create_franchise)
@@ -108,7 +108,8 @@ with psycopg2.connect(dbname=nba_db, user=user, password=pw, host=host) as conn_
                                 city TEXT,
                                 state TEXT,
                                 country TEXT,
-                                name TEXT
+                                name TEXT,
+                                CONSTRAINT unique_stadium UNIQUE (city, state, country, name)
                             );
                             '''.format(stadium_table)
         cur_nba.execute(create_stadium)
@@ -123,7 +124,8 @@ with psycopg2.connect(dbname=nba_db, user=user, password=pw, host=host) as conn_
                                  person_id SERIAL PRIMARY KEY,
                                  first_name TEXT,
                                  last_name TEXT,
-                                 date_of_birth DATE
+                                 date_of_birth DATE,
+                                 CONSTRAINT unique_person UNIQUE (first_name, last_name, date_of_birth)
                              );
                              '''.format(person_info_table)
         cur_nba.execute(create_person_info)
@@ -140,7 +142,7 @@ with psycopg2.connect(dbname=nba_db, user=user, password=pw, host=host) as conn_
                             (
                                 conference_id SERIAL PRIMARY KEY,
                                 league_id INTEGER REFERENCES league(league_id),
-                                name TEXT
+                                name TEXT UNIQUE
                             );
                             '''.format(conference_table)
         cur_nba.execute(create_conference)
@@ -154,7 +156,7 @@ with psycopg2.connect(dbname=nba_db, user=user, password=pw, host=host) as conn_
                           (
                               division_id SERIAL PRIMARY KEY,
                               conference_id INTEGER REFERENCES conference(conference_id),
-                              name TEXT
+                              name TEXT UNIQUE
                           );
                           '''.format(division_table)
         cur_nba.execute(create_division)
